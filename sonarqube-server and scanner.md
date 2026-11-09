@@ -1,23 +1,30 @@
+### **install and Config Sonarqube**
+=====================================
+### **Install Java 21**
+```
 apt install openjdk-21-jdk openjdk-21-jre -y
 sudo update-alternatives --config java
-
+```
+### **Install Postgresql**
+```
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update
 sudo apt-get -y install postgresql
-
-
-
+```
+### **Config Database**
+```
 sudo -u postgres psql
 CREATE USER sonar WITH ENCRYPTED PASSWORD 'sonar';
 CREATE DATABASE sonarqube OWNER sonar;
 ALTER USER sonar WITH SUPERUSER;
 \q
-
+```
 
 ====================
-install SonarQube
-
+### **install SonarQube**
+sonarqube-installation
+```
 cd /opt
 sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-26.10.0.133078.zip
 sudo apt install unzip -y 
@@ -25,26 +32,22 @@ sudo unzip sonarqube-26.10.0.133078.zip
 sudo mv sonarqube-26.10.0.133078 sonarqube
 
 nano /opt/sonarqube/conf/sonar.properties
+```
+di edit config 
+```
+sonar.jdbc.username=sonar
+sonar.jdbc.password=sonar
+sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
+```
 
-
-
-sudo apt install openjdk-21-jdk -y
-sudo nano /etc/environment
-JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64/bin/java"
-source /etc/environment
-echo $JAVA_HOME
-java -version
-
-
-sudo apt remove openjdk-11-jdk openjdk-11-jre -y
-sudo apt autoremove -y
-sudo apt purge openjdk-11-jdk openjdk-11-jre -y
-
-
+### **Systemd Configuration**
+Systemd config
+```
 sudo useradd -r -s /bin/false sonar
 sudo chown -R sonar:sonar /opt/sonarqube
 
 sudo nano /etc/systemd/system/sonarqube.service
+```
 
 ===============
 [Unit]
@@ -61,6 +64,7 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+
 ======================
 
 sudo systemctl daemon-reload
