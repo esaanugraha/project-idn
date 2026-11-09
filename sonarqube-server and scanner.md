@@ -48,7 +48,8 @@ sudo chown -R sonar:sonar /opt/sonarqube
 
 sudo nano /etc/systemd/system/sonarqube.service
 ```
-
+edit seperti ini
+```
 ===============
 [Unit]
 Description=SonarQube service
@@ -64,23 +65,28 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
-
+```
+### reload systemctl
+```
 ======================
 
 sudo systemctl daemon-reload
 sudo systemctl enable sonarqube
 sudo systemctl start sonarqube
 sudo systemctl status sonarqube
+```
+### cek port 
 
+```
 ss -tulpn
 * pastikan port 9000 running/listen
 
-
+```
 
 ===================================================
-install sonar scanner
+### **install sonar scanner**
 
-
+```
 cd /opt/
 sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-8.3.1.16491-linux-x64.zip
 rm -R sonarscanner
@@ -95,7 +101,7 @@ which sonar-scanner
 sonar-scanner -v
 cd
 cd Belajar-Devops/simple-apps/
-
+```
 
 
 
